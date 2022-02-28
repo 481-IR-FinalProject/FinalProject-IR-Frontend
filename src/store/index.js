@@ -1,9 +1,11 @@
+import { store } from "quasar/wrappers";
 import { createStore } from "vuex";
 
-export default createStore({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+export default store(function (/* { ssrContext } */) {
+  const Store = createStore({
+    modules: {},
+    strict: process.env.DEBUGGING,
+  });
+
+  return Store;
 });
