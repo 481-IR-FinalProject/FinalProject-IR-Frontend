@@ -1,1 +1,4 @@
-/* app global css */
+@font-face {
+  font-family: "RSU";
+  src: url(../css/fonts/RSU_Regular.ttf) format(ttf);
+}

@@ -6,7 +6,7 @@ module.exports = configure(function (ctx) {
     supportTS: false,
     boot: ["axios"],
     css: ["app.css"],
-    extras: ["roboto-font", "material-icons"],
+    extras: ["material-icons"],
 
     build: {
       vueRouterMode: "history", // available values: 'hash', 'history'
