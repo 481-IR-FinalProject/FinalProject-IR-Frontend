@@ -1,13 +1,13 @@
-import { boot } from "quasar/wrappers";
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://127.0.0.1:5000/",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
   },
 });
+
 apiClient.interceptors.request.use(
   (request) => {
     const token = localStorage.getItem("token");
@@ -20,9 +20,5 @@ apiClient.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-export default boot(({ app }) => {
-  app.config.globalProperties.$axios = axios;
-  app.config.globalProperties.$api = apiClient;
-});
 
-export { apiClient };
+export default apiClient;

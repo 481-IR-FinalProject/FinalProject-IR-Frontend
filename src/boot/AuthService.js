@@ -3,7 +3,7 @@ import GStore from "src/store/GStore";
 export default {
   login(user) {
     return apiClient
-      .post("/auth", {
+      .post("/login", {
         username: user.username,
         password: user.password,
       })
@@ -40,11 +40,8 @@ export default {
   },
   register(user) {
     return apiClient.post("/register", {
-      email: user.username,
       username: user.username,
       password: user.password,
-      firstname: user.firstname,
-      lastname: user.lastname,
     });
   },
 };

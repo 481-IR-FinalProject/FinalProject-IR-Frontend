@@ -4,7 +4,6 @@ const { configure } = require("quasar/wrappers");
 module.exports = configure(function (ctx) {
   return {
     supportTS: false,
-    boot: ["axios"],
     css: ["app.css"],
     extras: ["material-icons"],
 

@@ -115,13 +115,9 @@ export default {
     handleLogin(user) {
       AuthService.login(user)
         .then(() => {
-          if (this.isAdmin) {
-            this.$router.push({ name: "AdminProjectList" });
-          } else if (this.isUser) {
-            this.$router.push({
-              name: "VerifyApplication",
-            });
-          }
+          this.$router.push({
+            name: "Home",
+          });
         })
         .catch(() => {
           this.message = "Cannot login to the system.";
