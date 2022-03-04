@@ -1,25 +1,21 @@
 import apiClient from "boot/axios.js";
 import GStore from "src/store/GStore";
 export default {
-  login(user) {
-    return apiClient
+  async login(user) {
+    const response = await apiClient
       .post("/login", {
         username: user.username,
-        password: user.password,
-      })
-      .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        GStore.currentUser = response.data.user;
-        return Promise.resolve(response.data);
+        password: user.password
       });
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
+    GStore.currentUser = response.data.user;
+    return await Promise.resolve(response.data);
   },
   logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    localStorage.removeItem("authorities");
     GStore.currentUser = null;
-    GStore.authorities = null;
   },
   getUser() {
     return JSON.parse(localStorage.getItem("user"));

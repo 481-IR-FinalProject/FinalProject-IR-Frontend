@@ -1,24 +1,28 @@
 <template>
   <div>
-    <h1>User Page</h1>
-    <Button label="Logout" type="submit" @click="logout" />
+    <q-page-container class="flex flex-center q-pa-md row q-gutter-lg">
+      <FoodCard v-for="foods in food" :key="foods.id" :foods="foods" />
+    </q-page-container>
   </div>
 </template>
-
 <script>
-import Button from "components/Button.vue";
-import AuthService from "boot/AuthService.js";
-
+import FoodCard from "components/FoodCard.vue";
+import FoodService from "boot/FoodService.js";
 export default {
-  name: "Home",
   components: {
-    Button,
+    FoodCard,
   },
-  methods: {
-    logout() {
-      AuthService.logout();
-      this.$router.push({ name: "Login" });
-    },
+  data() {
+    return {
+      page: 1,
+      food: null,
+    };
+  },
+  created() {
+    FoodService.getAllFoodWithPagination(this.page).then((response) => {
+      this.food = response.data;
+      console.log(this.food);
+    });
   },
 };
 </script>
