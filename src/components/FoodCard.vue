@@ -18,28 +18,56 @@
           :to="{ name: 'FoodDetail', params: { id: foods.id } }"
         >
           <div class="text-h5">
-            <b>
-              {{ foods.title }}
-            </b>
+            <b> {{ foods.id }}. {{ foods.title }} </b>
           </div>
         </router-link>
       </q-card-section>
     </q-card-section>
     <q-card-section>
       <q-card-actions horizontal class="justify-around q-px-md">
-        <q-btn flat round color="black" icon="favorite" />
-        <q-btn flat round color="red" icon="favorite" />
+        <!-- <div v-if="checkFav == false"> -->
+        <q-btn flat round color="black" icon="favorite" @click="addFav" />
+        <!-- </div>
+        <div v-if="checkFav == true"> -->
+        <q-btn flat round color="red" icon="favorite" @click="removeFav" />
+        <!-- </div> -->
       </q-card-actions>
     </q-card-section>
   </q-card>
 </template>
 <script>
+import FoodService from "boot/FoodService.js";
+import AuthService from "boot/AuthService.js";
 export default {
   name: "FoodCard",
   props: {
     foods: {
       type: Object,
       required: true,
+    },
+  },
+  data() {
+    return {
+      userID: null,
+      favorite: [],
+    };
+  },
+  setup() {
+    return {
+      checkFav: true,
+    };
+  },
+  created() {
+    this.userID = AuthService.getUser().id;
+  },
+  methods: {
+    removeFav() {
+      FoodService.removeFavoriteFood(this.userID, this.foods.id);
+      this.checkFav = false;
+    },
+    addFav() {
+      FoodService.addFavoriteFood(this.userID, this.foods.id);
+      this.checkFav = true;
     },
   },
 };
@@ -52,7 +80,7 @@ export default {
 }
 .my-card {
   width: 100%;
-  max-width: 450px;
+  max-width: 600px;
   height: 250px;
 }
 

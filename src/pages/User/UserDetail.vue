@@ -22,7 +22,6 @@ export default {
   },
   created() {
     this.user = AuthService.getUser();
-    console.log(this.user.id);
     FoodService.getFavoriteFood(this.user.id).then((response) => {
       this.food = response.data;
       console.log(this.food);

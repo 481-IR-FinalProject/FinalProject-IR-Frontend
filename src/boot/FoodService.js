@@ -4,6 +4,9 @@ export default {
     getAllFoodWithPagination(page) {
         return apiClient.get("/getAllData/page=" + page);
     },
+    getFoodCount() {
+        return apiClient.get("/foodCount");
+    },
     getFoodByID(id) {
         return apiClient.get("/getFood/" + id);
     },

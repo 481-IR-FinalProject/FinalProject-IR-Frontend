@@ -24,8 +24,8 @@
                 font-size: large;
                 margin-right: 2%;
               "
-              >User profile</router-link
-            >
+              >User favorite food
+            </router-link>
             <Button
               label="Logout"
               color="black"
@@ -47,6 +47,7 @@
 import AuthService from "boot/AuthService.js";
 import Button from "components/Button.vue";
 export default {
+  inject: ["GStore"],
   components: {
     Button,
   },
