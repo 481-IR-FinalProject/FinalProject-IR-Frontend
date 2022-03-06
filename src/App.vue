@@ -47,7 +47,6 @@
 import AuthService from "boot/AuthService.js";
 import Button from "components/Button.vue";
 export default {
-  inject: ["GStore"],
   components: {
     Button,
   },

@@ -3,7 +3,13 @@
     {{ user.username }}
   </div>
   <q-page-container class="flex flex-center q-pa-md row q-gutter-lg">
-    <FoodCard v-for="foods in food" :key="foods" :foods="foods" />
+    <FoodCard
+      v-for="foods in food"
+      :key="foods.id"
+      :foods="foods"
+      :userID="user.id"
+      :checkFav="keep.includes(foods.id) ? true : false"
+    />
   </q-page-container>
 </template>
 <script>
@@ -18,13 +24,16 @@ export default {
     return {
       user: null,
       food: null,
+      keep: [],
     };
   },
   created() {
     this.user = AuthService.getUser();
     FoodService.getFavoriteFood(this.user.id).then((response) => {
       this.food = response.data;
-      console.log(this.food);
+      for (let i = 0; i < this.food.length; i++) {
+        this.keep.push(this.food[i].id);
+      }
     });
   },
 };

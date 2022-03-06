@@ -1,5 +1,3 @@
-import AuthService from "src/boot/AuthService";
-
 const routes = [
   {
     path: "/",
@@ -38,11 +36,21 @@ const routes = [
     path: "/login",
     name: "Login",
     component: () => import("pages/Authentication/Login.vue"),
+    beforeEnter: () => {
+      if (localStorage.getItem("user") != null) {
+        return { name: "Home" };
+      }
+    },
   },
   {
     path: "/register",
     name: "Register",
     component: () => import("pages/Authentication/Register.vue"),
+    beforeEnter: () => {
+      if (localStorage.getItem("user") != null) {
+        return { name: "Home" };
+      }
+    },
   },
   {
     path: "/:catchAll(.*)*",

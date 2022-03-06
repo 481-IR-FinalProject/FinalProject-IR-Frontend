@@ -8,10 +8,6 @@
             width="450px"
             height="350px"
           />
-          <div class="q-px-md" style="text-align: center">
-            <q-btn flat round color="black" icon="favorite" size="1.5em" />
-            <q-btn flat round color="red" icon="favorite" size="1.5em" />
-          </div>
         </q-card-section>
         <q-card-section vertical style="width: 100%">
           <div class="text-h4 text-bold text-primary">
