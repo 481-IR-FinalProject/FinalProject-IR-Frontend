@@ -19,7 +19,6 @@
             style="height: 200px"
             :thumb-style="thumbStyle"
             :visible="true"
-            :content-active-style="contentActiveStyle"
           >
             <div
               class="text-subtitle1"
@@ -35,7 +34,6 @@
             style="height: 200px"
             :thumb-style="thumbStyle"
             :visible="true"
-            :content-active-style="contentActiveStyle"
           >
             <div
               class="text-subtitle1"
@@ -53,7 +51,6 @@
 <script>
 import FoodService from "src/boot/FoodService";
 export default {
-  inject: ["GStore"],
   name: "FoodDetail",
   data() {
     return {

@@ -103,14 +103,6 @@ export default {
       password: ref(""),
     };
   },
-  computed: {
-    isAdmin() {
-      return AuthService.hasRoles("ROLE_ADMIN");
-    },
-    isUser() {
-      return AuthService.hasRoles("ROLE_VISITOR");
-    },
-  },
   methods: {
     handleLogin(user) {
       AuthService.login(user)
