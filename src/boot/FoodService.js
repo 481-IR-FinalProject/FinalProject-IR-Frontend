@@ -4,9 +4,6 @@ export default {
     getAllFoodWithPagination(page) {
         return apiClient.get("/getAllData/page=" + page);
     },
-    getFoodCount() {
-        return apiClient.get("/foodCount");
-    },
     getFoodByID(id) {
         return apiClient.get("/getFood/" + id);
     },
@@ -25,6 +22,12 @@ export default {
     getFavoriteFood(user_id) {
         return apiClient.post("/getFavorite", {
             user_id: user_id,
+        });
+    },
+    foodSearching(food, type, page) {
+        return apiClient.post("/TF-IDFsearch/page=" + page, {
+            query: food,
+            type: type
         });
     }
 }

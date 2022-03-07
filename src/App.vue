@@ -34,6 +34,7 @@
               FontWeight="bold"
               type="submit"
               @click="logout"
+              rounded
             />
           </q-toolbar>
         </q-header>

@@ -13,6 +13,21 @@ const routes = [
     })
   },
   {
+    path: "/search=:keyword?/type=:types?",
+    name: "SearchResult",
+    component: () => import("pages/Food/FoodSearchList.vue"),
+    beforeEnter: () => {
+      if (localStorage.getItem("user") == null) {
+        return { name: "Login" };
+      }
+    },
+    props: (to) => ({
+      foodData: to.params.keyword || to.params.keyword,
+      choose: to.params.types || to.params.types,
+      page: parseInt(to.query.page) || 1,
+    })
+  },
+  {
     path: '/food/:id',
     name: 'FoodDetail',
     component: () => import("pages/Food/FoodDetail.vue"),

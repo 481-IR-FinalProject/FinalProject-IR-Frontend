@@ -2,7 +2,7 @@
   <q-page-container class="flex flex-center q-pa-md q-gutter-lg">
     <Form @submit="searchFood" style="width: 90%">
       <div class="row">
-        <div class="col-9" style="margin-right: 1%">
+        <div class="col-9" style="margin-right: 2%">
           <Field name="search" v-slot="{ value, field }" v-model="search">
             <BaseInput
               label="Search food"
@@ -58,7 +58,13 @@
     <q-space />
     <q-space />
     <div v-if="this.page != 1">
-      <router-link :to="{ name: 'Home', query: { page: 1 } }">
+      <router-link
+        :to="{
+          name: 'SearchResult',
+          params: { keyword: foodData, types: choose },
+          query: { page: 1 },
+        }"
+      >
         <q-icon
           v-for="size in ['md']"
           :key="size"
@@ -66,7 +72,13 @@
           name="first_page"
         />
       </router-link>
-      <router-link :to="{ name: 'Home', query: { page: page - 1 } }">
+      <router-link
+        :to="{
+          name: 'SearchResult',
+          params: { keyword: foodData, types: choose },
+          query: { page: page - 1 },
+        }"
+      >
         <q-icon
           v-for="size in ['md']"
           :key="size"
@@ -79,7 +91,13 @@
     <q-space />
 
     <div v-if="HasNext">
-      <router-link :to="{ name: 'Home', query: { page: page + 1 } }">
+      <router-link
+        :to="{
+          name: 'SearchResult',
+          params: { keyword: foodData, types: choose },
+          query: { page: page + 1 },
+        }"
+      >
         <q-icon
           v-for="size in ['md']"
           :key="size"
@@ -88,7 +106,11 @@
         />
       </router-link>
       <router-link
-        :to="{ name: 'Home', query: { page: LastPage } }"
+        :to="{
+          name: 'SearchResult',
+          params: { keyword: foodData, types: choose },
+          query: { page: LastPage },
+        }"
         v-if="page != 0"
       >
         <q-icon
@@ -110,11 +132,11 @@
 <script>
 import { Form, Field } from "vee-validate";
 import { ref } from "vue";
-import BaseInput from "components/BaseInput.vue";
-import FoodCard from "components/FoodCard.vue";
 import Button from "components/Button.vue";
+import FoodCard from "components/FoodCard.vue";
 import FoodService from "boot/FoodService.js";
 import AuthService from "src/boot/AuthService";
+import BaseInput from "components/BaseInput.vue";
 export default {
   components: {
     BaseInput,
@@ -133,13 +155,21 @@ export default {
   },
   setup() {
     return {
-      search: "",
+      search: null,
       choice: ref("Title"),
     };
   },
   props: {
     page: {
       type: Number,
+      required: true,
+    },
+    foodData: {
+      type: String,
+      required: true,
+    },
+    choose: {
+      type: String,
       required: true,
     },
   },
@@ -155,28 +185,38 @@ export default {
   },
   methods: {
     searchFood() {
-      FoodService.foodSearching(this.search, this.choice, 1).then(() => {
-        this.$router.push({
-          name: "SearchResult",
-          params: { keyword: this.search, types: this.choice },
-        });
-      });
+      FoodService.foodSearching(this.search, this.choice, this.page).then(
+        () => {
+          this.$router
+            .push({
+              name: "SearchResult",
+              params: { keyword: this.search, types: this.choice },
+            })
+            .then(() => {
+              this.$router.go();
+            });
+        }
+      );
     },
   },
   created() {
     (this.userID = AuthService.getUser().id),
-      FoodService.getAllFoodWithPagination(this.page).then((response) => {
-        (this.food = response.data[1]),
-          (this.maxPage = (parseInt(response.data[0] / 10) + 1).toFixed(0)),
-          FoodService.getFavoriteFood(this.userID).then((response) => {
-            for (let i = 0; i < response.data.length; i++) {
-              this.keep.push(response.data[i].id);
-            }
-          });
-      });
+      FoodService.foodSearching(this.foodData, this.choose, this.page).then(
+        (response) => {
+          (this.food = response.data[1]),
+            (this.maxPage = (parseInt(response.data[0] / 10) + 1).toFixed(0)),
+            FoodService.getFavoriteFood(this.userID).then((responser) => {
+              for (let i = 0; i < responser.data.length; i++) {
+                this.keep.push(responser.data[i].id);
+              }
+            });
+        }
+      );
   },
   beforeRouteEnter(routeTo, routeFrom, next) {
-    FoodService.getAllFoodWithPagination(
+    FoodService.foodSearching(
+      routeTo.params.keyword,
+      routeTo.params.types,
       parseInt(routeTo.query.page) || 1
     ).then((response) => {
       next((compute) => {
@@ -185,7 +225,9 @@ export default {
     });
   },
   beforeRouteUpdate(routeTo) {
-    FoodService.getAllFoodWithPagination(
+    FoodService.foodSearching(
+      routeTo.params.keyword,
+      routeTo.params.types,
       parseInt(routeTo.query.page) || 1
     ).then((response) => {
       this.food = response.data[1];
