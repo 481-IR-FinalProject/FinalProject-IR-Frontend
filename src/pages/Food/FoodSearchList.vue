@@ -20,7 +20,7 @@
               name="choice"
               v-model="choice"
               label="Search by.."
-              :options="['Title', 'Ingredient']"
+              :options="['Title', 'Ingredient', 'Favorite']"
               :modelValue="value"
               :vBind="field"
             />
@@ -47,7 +47,6 @@
       v-for="foods in food"
       :key="foods.id"
       :foods="foods"
-      :userID="userID"
       :checkFav="keep.includes(foods.id) ? true : false"
     />
   </q-page-container>
@@ -148,7 +147,6 @@ export default {
   data() {
     return {
       food: null,
-      userID: null,
       maxPage: 0,
       keep: [],
     };
@@ -200,18 +198,17 @@ export default {
     },
   },
   created() {
-    (this.userID = AuthService.getUser().id),
-      FoodService.foodSearching(this.foodData, this.choose, this.page).then(
-        (response) => {
-          (this.food = response.data[1]),
-            (this.maxPage = (parseInt(response.data[0] / 10) + 1).toFixed(0)),
-            FoodService.getFavoriteFood(this.userID).then((responser) => {
-              for (let i = 0; i < responser.data.length; i++) {
-                this.keep.push(responser.data[i].id);
-              }
-            });
-        }
-      );
+    FoodService.foodSearching(this.foodData, this.choose, this.page).then(
+      (response) => {
+        (this.food = response.data[1]),
+          (this.maxPage = (parseInt(response.data[0] / 10) + 1).toFixed(0)),
+          FoodService.getFavoriteFood().then((responser) => {
+            for (let i = 0; i < responser.data.length; i++) {
+              this.keep.push(responser.data[i].id);
+            }
+          });
+      }
+    );
   },
   beforeRouteEnter(routeTo, routeFrom, next) {
     FoodService.foodSearching(

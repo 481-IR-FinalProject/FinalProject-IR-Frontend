@@ -7,7 +7,6 @@
       v-for="foods in food"
       :key="foods.id"
       :foods="foods"
-      :userID="user.id"
       :checkFav="keep.includes(foods.id) ? true : false"
     />
   </q-page-container>

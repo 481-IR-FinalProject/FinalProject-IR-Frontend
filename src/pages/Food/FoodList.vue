@@ -20,7 +20,7 @@
               name="choice"
               v-model="choice"
               label="Search by.."
-              :options="['Title', 'Ingredient']"
+              :options="['Title', 'Ingredient', 'Favorite']"
               :modelValue="value"
               :vBind="field"
             />
@@ -47,7 +47,6 @@
       v-for="foods in food"
       :key="foods.id"
       :foods="foods"
-      :userID="userID"
       :checkFav="keep.includes(foods.id) ? true : false"
     />
   </q-page-container>
@@ -126,7 +125,6 @@ export default {
   data() {
     return {
       food: null,
-      userID: null,
       maxPage: 0,
       keep: [],
     };
@@ -164,16 +162,15 @@ export default {
     },
   },
   created() {
-    (this.userID = AuthService.getUser().id),
-      FoodService.getAllFoodWithPagination(this.page).then((response) => {
-        (this.food = response.data[1]),
-          (this.maxPage = (parseInt(response.data[0] / 10) + 1).toFixed(0)),
-          FoodService.getFavoriteFood(this.userID).then((response) => {
-            for (let i = 0; i < response.data.length; i++) {
-              this.keep.push(response.data[i].id);
-            }
-          });
-      });
+    FoodService.getAllFoodWithPagination(this.page).then((response) => {
+      (this.food = response.data[1]),
+        (this.maxPage = (parseInt(response.data[0] / 10) + 1).toFixed(0)),
+        FoodService.getFavoriteFood().then((response) => {
+          for (let i = 0; i < response.data.length; i++) {
+            this.keep.push(response.data[i].id);
+          }
+        });
+    });
   },
   beforeRouteEnter(routeTo, routeFrom, next) {
     FoodService.getAllFoodWithPagination(

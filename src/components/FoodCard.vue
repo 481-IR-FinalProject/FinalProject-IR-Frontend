@@ -55,10 +55,6 @@ export default {
       type: Object,
       required: true,
     },
-    userID: {
-      type: Number,
-      required: true,
-    },
     checkFav: {
       type: Boolean,
       required: true,
@@ -66,12 +62,12 @@ export default {
   },
   methods: {
     removeFav() {
-      FoodService.removeFavoriteFood(this.userID, this.foods.id);
+      FoodService.removeFavoriteFood(this.foods.id);
       console.log("Remove favorite successfully!!!");
       this.$router.go();
     },
     addFav() {
-      FoodService.addFavoriteFood(this.userID, this.foods.id);
+      FoodService.addFavoriteFood(this.foods.id);
       console.log("Add favorite successfully!!!");
       this.$router.go();
     },
