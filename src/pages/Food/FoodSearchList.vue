@@ -26,7 +26,9 @@
             />
           </Field>
         </div>
-        <div class="col-2">
+      </div>
+      <div class="row">
+        <div class="col-2" style="margin-right: 3%">
           <Button
             type="submit"
             label="Search"
@@ -39,9 +41,19 @@
             :disabled="!search"
           />
         </div>
+        <div class="col-8 text-h6" v-if="suggestCorrect != ''">
+          Or do you mean
+          <b style="color: red; cursor: pointer" @click="getCorrectFood">{{
+            suggestCorrect
+          }}</b
+          >?
+        </div>
       </div>
     </Form>
   </q-page-container>
+  <div class="text-h6 flex flex-center">
+    <b>Total Food found: </b> <span style="color: green"> {{ foodCount }}</span>
+  </div>
   <q-page-container class="flex flex-center q-pa-md row q-gutter-lg">
     <FoodCard
       v-for="foods in food"
@@ -87,6 +99,8 @@
       </router-link>
     </div>
 
+    <q-space />
+    <div class="text-subtitle1">{{ page }}/{{ maxPage }}</div>
     <q-space />
 
     <div v-if="HasNext">
@@ -134,7 +148,6 @@ import { ref } from "vue";
 import Button from "components/Button.vue";
 import FoodCard from "components/FoodCard.vue";
 import FoodService from "boot/FoodService.js";
-import AuthService from "src/boot/AuthService";
 import BaseInput from "components/BaseInput.vue";
 export default {
   components: {
@@ -147,6 +160,8 @@ export default {
   data() {
     return {
       food: null,
+      foodCount: 0,
+      suggestCorrect: null,
       maxPage: 0,
       keep: [],
     };
@@ -196,11 +211,29 @@ export default {
         }
       );
     },
+    getCorrectFood() {
+      FoodService.foodSearching(
+        this.suggestCorrect,
+        this.choice,
+        this.page
+      ).then(() => {
+        this.$router
+          .push({
+            name: "SearchResult",
+            params: { keyword: this.suggestCorrect, types: this.choice },
+          })
+          .then(() => {
+            this.$router.go();
+          });
+      });
+    },
   },
   created() {
     FoodService.foodSearching(this.foodData, this.choose, this.page).then(
       (response) => {
-        (this.food = response.data[1]),
+        (this.foodCount = response.data[0]),
+          (this.suggestCorrect = response.data[1]),
+          (this.food = response.data[2]),
           (this.maxPage = (parseInt(response.data[0] / 10) + 1).toFixed(0)),
           FoodService.getFavoriteFood().then((responser) => {
             for (let i = 0; i < responser.data.length; i++) {
@@ -217,7 +250,7 @@ export default {
       parseInt(routeTo.query.page) || 1
     ).then((response) => {
       next((compute) => {
-        compute.food = response.data[1];
+        compute.food = response.data[2];
       });
     });
   },
@@ -227,7 +260,7 @@ export default {
       routeTo.params.types,
       parseInt(routeTo.query.page) || 1
     ).then((response) => {
-      this.food = response.data[1];
+      this.food = response.data[2];
     });
   },
 };

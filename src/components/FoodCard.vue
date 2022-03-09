@@ -1,7 +1,7 @@
 <template>
   <q-card class="my-card shadow-10" transition="scale">
     <q-card-section horizontal>
-      <q-img
+      <img
         class="col-5"
         style="margin: 2%"
         :src="'FoodImages/' + foods.image + '.jpg'"
@@ -10,15 +10,15 @@
       />
 
       <q-card-section
-        style="word-wrap: break-word margin: 0.7%"
-        class="col-7 q-mt-sm q-mb-xs"
+        style="word-wrap: break-word"
+        class="col-6 q-mt-sm q-mb-xs"
       >
         <router-link
           class="hoverName"
           :to="{ name: 'FoodDetail', params: { id: foods.id } }"
         >
-          <div class="text-h5">
-            <b> {{ foods.id }}. {{ foods.title }}</b>
+          <div class="text-h6">
+            <b> {{ foods.title }}</b>
           </div>
         </router-link>
       </q-card-section>

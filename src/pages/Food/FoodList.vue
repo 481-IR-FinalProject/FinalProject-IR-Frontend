@@ -42,6 +42,10 @@
       </div>
     </Form>
   </q-page-container>
+  <div class="text-h6 flex flex-center">
+    <b>Total Food found: </b>
+    <span style="color: green"> {{ foodCount[0] }}</span>
+  </div>
   <q-page-container class="flex flex-center q-pa-md row q-gutter-lg">
     <FoodCard
       v-for="foods in food"
@@ -75,6 +79,8 @@
       </router-link>
     </div>
 
+    <q-space />
+    <div class="text-subtitle1">{{ page }}/{{ maxPage }}</div>
     <q-space />
 
     <div v-if="HasNext">
@@ -113,7 +119,6 @@ import BaseInput from "components/BaseInput.vue";
 import FoodCard from "components/FoodCard.vue";
 import Button from "components/Button.vue";
 import FoodService from "boot/FoodService.js";
-import AuthService from "src/boot/AuthService";
 export default {
   components: {
     BaseInput,
@@ -125,6 +130,7 @@ export default {
   data() {
     return {
       food: null,
+      foodCount: 0,
       maxPage: 0,
       keep: [],
     };
@@ -163,7 +169,8 @@ export default {
   },
   created() {
     FoodService.getAllFoodWithPagination(this.page).then((response) => {
-      (this.food = response.data[1]),
+      (this.foodCount = response.data[0]),
+        (this.food = response.data[1]),
         (this.maxPage = (parseInt(response.data[0] / 10) + 1).toFixed(0)),
         FoodService.getFavoriteFood().then((response) => {
           for (let i = 0; i < response.data.length; i++) {

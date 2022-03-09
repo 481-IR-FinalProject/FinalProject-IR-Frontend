@@ -20,7 +20,7 @@ export default {
             food_id: food_id
         });
     },
-    getFavoriteFood(user_id) {
+    getFavoriteFood() {
         return apiClient.post("/getFavorite", {
             user_id: AuthService.getUser().id,
         });
