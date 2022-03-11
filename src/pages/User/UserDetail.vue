@@ -14,6 +14,7 @@
 <script>
 import FoodService from "boot/FoodService";
 import FoodCard from "components/FoodCard.vue";
+import AuthService from "src/boot/AuthService";
 export default {
   components: {
     FoodCard,
@@ -26,6 +27,7 @@ export default {
     };
   },
   created() {
+    this.user = AuthService.getUser();
     FoodService.getFavoriteFood().then((response) => {
       this.food = response.data;
       for (let i = 0; i < this.food.length; i++) {

@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     currentUser() {
-      return localStorage.getItem("user");
+      return AuthService.getUser();
     },
   },
   methods: {
