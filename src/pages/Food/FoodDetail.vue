@@ -46,17 +46,40 @@
         </q-card-section>
       </q-card-section>
     </q-card>
+    <div class="text-h5 text-bold text-primary" style="margin-top: 2%">
+      <q-toggle v-model="visible" label=" Recommended food" class="q-mb-md" />
+    </div>
+    <q-slide-transition>
+      <div v-show="visible">
+        <q-page-container class="flex flex-center q-pa-md row q-gutter-lg">
+          <FoodCard
+            v-for="foods in recommend.slice(1, 9)"
+            :key="foods.id"
+            :foods="foods"
+            :checkFav="keep.includes(foods.id) ? true : false"
+            @click="refresh"
+          />
+        </q-page-container>
+      </div>
+    </q-slide-transition>
   </div>
 </template>
 <script>
+import { ref } from "vue";
+import FoodCard from "components/FoodCard.vue";
 import FoodService from "src/boot/FoodService";
 export default {
+  components: {
+    FoodCard,
+  },
   name: "FoodDetail",
   data() {
     return {
       food: "",
+      recommend: "",
       ingredient: [],
       instruction: [],
+      keep: [],
     };
   },
   setup() {
@@ -72,7 +95,13 @@ export default {
         width: "5px",
         opacity: 0.75,
       },
+      visible: ref(false),
     };
+  },
+  methods: {
+    refresh() {
+      this.$router.go();
+    },
   },
   created() {
     FoodService.getFoodByID(this.$route.params.id).then((response) => {
@@ -83,6 +112,16 @@ export default {
         this.ingredient.length - 1
       ].replace("'", "");
       this.instruction = response.data.instruction.split(". ");
+      FoodService.foodSearching(response.data.title, "Title", 1).then(
+        (response) => {
+          (this.recommend = response.data[2]),
+            FoodService.getFavoriteFood().then((responser) => {
+              for (let i = 0; i < responser.data.length; i++) {
+                this.keep.push(responser.data[i].id);
+              }
+            });
+        }
+      );
     });
   },
 };
