@@ -69,13 +69,10 @@
           v-for="size in ['md']"
           :key="size"
           :size="size"
-          name="firstPage"
+          name="first_page"
         />
       </router-link>
-      <router-link
-        :to="{ name: 'Home', query: { page: page - 1 } }"
-        name="previousPage"
-      >
+      <router-link :to="{ name: 'Home', query: { page: page - 1 } }">
         <q-icon
           v-for="size in ['md']"
           :key="size"
@@ -90,10 +87,7 @@
     <q-space />
 
     <div v-if="HasNext">
-      <router-link
-        :to="{ name: 'Home', query: { page: page + 1 } }"
-        name="nextPage"
-      >
+      <router-link :to="{ name: 'Home', query: { page: page + 1 } }">
         <q-icon
           v-for="size in ['md']"
           :key="size"
@@ -104,7 +98,6 @@
       <router-link
         :to="{ name: 'Home', query: { page: LastPage } }"
         v-if="page != 0"
-        name="lastPage"
       >
         <q-icon
           v-for="size in ['md']"

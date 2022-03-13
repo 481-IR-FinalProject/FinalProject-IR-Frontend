@@ -70,14 +70,7 @@
     <q-space />
     <q-space />
     <div v-if="this.page != 1">
-      <router-link
-        :to="{
-          name: 'SearchResult',
-          params: { keyword: foodData, types: choose },
-          query: { page: 1 },
-        }"
-        name="firstPage"
-      >
+      <router-link :to="{ name: 'Home', query: { page: 1 } }">
         <q-icon
           v-for="size in ['md']"
           :key="size"
@@ -85,14 +78,7 @@
           name="first_page"
         />
       </router-link>
-      <router-link
-        :to="{
-          name: 'SearchResult',
-          params: { keyword: foodData, types: choose },
-          query: { page: page - 1 },
-        }"
-        name="previousPage"
-      >
+      <router-link :to="{ name: 'Home', query: { page: page - 1 } }">
         <q-icon
           v-for="size in ['md']"
           :key="size"
@@ -107,14 +93,7 @@
     <q-space />
 
     <div v-if="HasNext">
-      <router-link
-        :to="{
-          name: 'SearchResult',
-          params: { keyword: foodData, types: choose },
-          query: { page: page + 1 },
-        }"
-        name="nextPage"
-      >
+      <router-link :to="{ name: 'Home', query: { page: page + 1 } }">
         <q-icon
           v-for="size in ['md']"
           :key="size"
@@ -123,13 +102,8 @@
         />
       </router-link>
       <router-link
-        :to="{
-          name: 'SearchResult',
-          params: { keyword: foodData, types: choose },
-          query: { page: LastPage },
-        }"
+        :to="{ name: 'Home', query: { page: LastPage } }"
         v-if="page != 0"
-        name="lastPage"
       >
         <q-icon
           v-for="size in ['md']"
