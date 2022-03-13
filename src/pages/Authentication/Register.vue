@@ -73,11 +73,15 @@
               padding="0"
               fontSize="18px"
               :disabled="!username || !password || !confirmPassword"
+              name="submitButton"
             />
           </q-card-section>
           <div class="text-subtitle2 register">
             Already have an account?
-            <router-link :to="{ name: 'Login' }" class="link text-subtitle2"
+            <router-link
+              :to="{ name: 'Login' }"
+              class="link text-subtitle2"
+              name="goToLogin"
               >Login</router-link
             >
           </div>

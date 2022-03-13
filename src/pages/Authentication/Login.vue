@@ -56,12 +56,16 @@
               padding="0"
               fontSize="18px"
               :disabled="!username || !password"
+              name="submitButton"
             />
           </q-card-section>
 
           <div class="text-subtitle2 register">
             Don't have an account?
-            <router-link :to="{ name: 'Register' }" class="link text-subtitle2"
+            <router-link
+              :to="{ name: 'Register' }"
+              class="link text-subtitle2"
+              name="goToRegister"
               >Register</router-link
             >
           </div>
@@ -107,7 +111,7 @@ export default {
     handleLogin(user) {
       AuthService.login(user)
         .then(() => {
-          this.$router.push({
+          this.$router.go({
             name: "Home",
           });
         })

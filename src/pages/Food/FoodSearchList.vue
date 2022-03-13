@@ -39,6 +39,7 @@
             padding="0"
             fontSize="18px"
             :disabled="!search"
+            name="submitSearch"
           />
         </div>
         <div class="col-8 text-h6" v-if="suggestCorrect != ''">
@@ -75,6 +76,7 @@
           params: { keyword: foodData, types: choose },
           query: { page: 1 },
         }"
+        name="firstPage"
       >
         <q-icon
           v-for="size in ['md']"
@@ -89,6 +91,7 @@
           params: { keyword: foodData, types: choose },
           query: { page: page - 1 },
         }"
+        name="previousPage"
       >
         <q-icon
           v-for="size in ['md']"
@@ -110,6 +113,7 @@
           params: { keyword: foodData, types: choose },
           query: { page: page + 1 },
         }"
+        name="nextPage"
       >
         <q-icon
           v-for="size in ['md']"
@@ -125,6 +129,7 @@
           query: { page: LastPage },
         }"
         v-if="page != 0"
+        name="lastPage"
       >
         <q-icon
           v-for="size in ['md']"

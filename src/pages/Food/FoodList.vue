@@ -14,16 +14,18 @@
         </div>
         <div class="col-2">
           <Field name="choice" v-slot="{ value, field }">
-            <q-select
-              rounded
-              outlined
-              name="choice"
-              v-model="choice"
-              label="Search by.."
-              :options="['Title', 'Ingredient', 'Favorite']"
-              :modelValue="value"
-              :vBind="field"
-            />
+            <div name="choose">
+              <q-select
+                rounded
+                outlined
+                name="choice"
+                v-model="choice"
+                label="Search by.."
+                :options="['Title', 'Ingredient', 'Favorite']"
+                :modelValue="value"
+                :vBind="field"
+              />
+            </div>
           </Field>
         </div>
         <div class="col-2">
@@ -37,6 +39,7 @@
             padding="0"
             fontSize="18px"
             :disabled="!search"
+            name="submitSearch"
           />
         </div>
       </div>
@@ -66,10 +69,13 @@
           v-for="size in ['md']"
           :key="size"
           :size="size"
-          name="first_page"
+          name="firstPage"
         />
       </router-link>
-      <router-link :to="{ name: 'Home', query: { page: page - 1 } }">
+      <router-link
+        :to="{ name: 'Home', query: { page: page - 1 } }"
+        name="previousPage"
+      >
         <q-icon
           v-for="size in ['md']"
           :key="size"
@@ -84,7 +90,10 @@
     <q-space />
 
     <div v-if="HasNext">
-      <router-link :to="{ name: 'Home', query: { page: page + 1 } }">
+      <router-link
+        :to="{ name: 'Home', query: { page: page + 1 } }"
+        name="nextPage"
+      >
         <q-icon
           v-for="size in ['md']"
           :key="size"
@@ -95,6 +104,7 @@
       <router-link
         :to="{ name: 'Home', query: { page: LastPage } }"
         v-if="page != 0"
+        name="lastPage"
       >
         <q-icon
           v-for="size in ['md']"

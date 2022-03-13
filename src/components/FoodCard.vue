@@ -16,6 +16,7 @@
         <router-link
           class="hoverName"
           :to="{ name: 'FoodDetail', params: { id: foods.id } }"
+          name="goToDetail"
         >
           <div class="text-h6">
             <b> {{ foods.title }}</b>
@@ -32,6 +33,7 @@
           color="black"
           icon="favorite"
           @click="addFav"
+          name="fav"
         />
         <q-btn
           flat
@@ -40,6 +42,7 @@
           color="red"
           icon="favorite"
           @click="removeFav"
+          name="fav"
         />
       </q-card-actions>
     </q-card-section>
